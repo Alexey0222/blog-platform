@@ -1,0 +1,44 @@
+@import '../../sass/mixins.scss';
+
+.form-wrap {
+  @include form;
+}
+
+.form-edit-profile {
+  @include form-sign;
+
+  &-inputs {
+    @include form-inputs;
+  }
+
+  &-title {
+    @include form-title;
+  }
+
+  &-label {
+    @include form-label;
+  }
+
+  &-input {
+    @include form-input;
+  }
+
+  &-button {
+    @include form-button;
+  }
+
+  &-span {
+    @include form-span;
+  }
+
+  &-link {
+    @include form-link;
+  }
+
+  &-error {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    color: #f5222d;
+  }
+}

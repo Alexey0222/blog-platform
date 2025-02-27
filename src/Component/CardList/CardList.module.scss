@@ -1,0 +1,16 @@
+.cardlist {
+  display: flex;
+  flex-direction: column;
+  gap: 1.625rem;
+  width: 100%;
+  align-items: center;
+  &-item {
+    width: 65%;
+  }
+}
+
+.pagination {
+  padding-top: 26px;
+  display: flex;
+  justify-content: center;
+}

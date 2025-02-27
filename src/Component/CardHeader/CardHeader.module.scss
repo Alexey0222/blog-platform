@@ -1,0 +1,130 @@
+.app-card {
+  // width: 941px;
+  //   height: 140px;
+  background-color: var(--panel-background);
+  padding: 15px 15px 24px 19px;
+  border-radius: 5px;
+}
+
+.app-card--alone {
+  box-shadow: 0px 4px 12px 0px #00000026;
+}
+
+.card-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  padding-top: 4px;
+}
+
+.card-tag-item {
+  border: 1px solid var(--tag);
+  border-radius: 2px;
+  color: var(--tag);
+  padding: 2px 6px 3px 5px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15px;
+}
+
+.card-tag-not {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15px;
+  color: var(--tag);
+}
+
+.card-article {
+  padding-top: 4px;
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+
+  &-description {
+    width: 100%;
+    height: 100%;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 22px;
+  }
+
+  &-change {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 12px;
+
+    &--edit {
+      border: 1px solid #52c41a;
+      border-radius: 5px;
+      padding: 4px 15px;
+      color: #52c41a;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 22px;
+    }
+  }
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+
+  &-wrap {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-top {
+    gap: 0.5rem;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.card-title_link > h2 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 28px;
+  color: rgb(24, 144, 255);
+}
+
+.like {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: 34px;
+  height: 22px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+
+    &_title {
+      color: var(--text);
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 28px;
+    }
+
+    &_date {
+      color: var(--tag);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 22px;
+    }
+  }
+
+  &-img {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+  }
+}
