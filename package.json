@@ -58,7 +58,7 @@
     "sass": "^1.85.1",
     "sass-loader": "^16.0.5",
     "typescript": "^5.2.2",
-    "vite": "^5.1.6"
+    "vite": "^6.2.0"
   },
   "husky": {
     "hooks": {
