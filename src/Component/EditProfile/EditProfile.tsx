@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
@@ -17,7 +17,7 @@ export interface IFieldEdit {
 export default function EditProfile() {
   const dispatch = useAppDispatch();
   const token = localStorage.getItem('token');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { loading, error, currentUser } = useAppSelector((state) => state.fetchReducer);
 
@@ -50,7 +50,7 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (submitCount && !error && !loading && !isSubmitting && !Object.keys(errors).length) {
-      history.push('/');
+      navigate('/');
     }
   }, [isSubmitting, loading]);
 
@@ -66,7 +66,7 @@ export default function EditProfile() {
   }
 
   return !token ? (
-    <Redirect to="/" />
+    <Navigate to="/" />
   ) : (
     <div className={classes['form-wrap']}>
       <form onSubmit={handleSubmit(onSubmit)} className={classes['form-edit-profile']}>

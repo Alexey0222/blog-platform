@@ -1,4 +1,4 @@
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
@@ -17,7 +17,7 @@ export default function SignIn() {
   const dispatch = useAppDispatch();
   const token = localStorage.getItem('token');
   const { loading, error } = useAppSelector((state) => state.fetchReducer);
-  const history = useHistory();
+  const navigate = useNavigate();
   // Если сервер вернёт ошибку (неверный email или пароль), она сохраняется в passwordError
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
@@ -29,7 +29,7 @@ export default function SignIn() {
 
   useEffect(() => {
     if (submitCount && !error && !loading && !isSubmitting && !Object.keys(errors).length) {
-      history.push('/');
+      navigate('/');
     }
   }, [isSubmitting, loading]);
 
@@ -65,7 +65,7 @@ export default function SignIn() {
     });
   }
   return token ? (
-    <Redirect to="/" />
+    <Navigate to="/" />
   ) : (
     <div className={classes['form-wrap']}>
       <form className={classes['form-sign-in']} onSubmit={handleSubmit(onSubmit)}>

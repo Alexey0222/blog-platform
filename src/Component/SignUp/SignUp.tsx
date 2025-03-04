@@ -1,4 +1,4 @@
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import classNames from 'classnames';
@@ -23,7 +23,7 @@ export default function SignUp() {
   //  состояние загрузки и ошибок из Redux
   const { loading, error } = useAppSelector((state) => state.fetchReducer);
   // для редиректа после успешной регистрации
-  const history = useHistory();
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors, submitCount, isSubmitting },
@@ -45,7 +45,7 @@ export default function SignUp() {
   // Редирект при успешной регистрации
   useEffect(() => {
     if (submitCount && !error && !loading && !isSubmitting && !Object.keys(errors).length) {
-      history.push('/');
+      navigate('/');
     }
   }, [isSubmitting, loading]);
 
@@ -65,7 +65,7 @@ export default function SignUp() {
   }
   // Если в localStorage есть token, пользователя перенаправляет на /
   return token ? (
-    <Redirect to="/" />
+    <Navigate to="/" />
   ) : (
     <div className={classes['form-wrap']}>
       <form onSubmit={handleSubmit(onSubmit)} className={classes['form-sign-up']}>

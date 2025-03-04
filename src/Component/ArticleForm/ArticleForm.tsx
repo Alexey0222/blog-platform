@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import uniqid from 'uniqid';
 import classNames from 'classnames';
@@ -23,7 +23,7 @@ type IFieldCreateArticle = {
 };
 
 export default function ArticleForm({ articleSlug = null }: { articleSlug: string | null }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { loading, error, currentArticle, currentUser } = useAppSelector(
     (state) => state.fetchReducer
   );
@@ -34,7 +34,7 @@ export default function ArticleForm({ articleSlug = null }: { articleSlug: strin
   const token = localStorage.getItem('token');
 
   const {
-    control,
+    control, // useForm создаёт объект control, который передаётся в useFieldArray
     register,
     formState: { errors, submitCount, isSubmitting },
     handleSubmit,
@@ -61,12 +61,13 @@ export default function ArticleForm({ articleSlug = null }: { articleSlug: strin
 
   useEffect(() => {
     if (submitCount && !error && !loading && !isSubmitting && !Object.keys(errors).length) {
-      history.push(`/articles/${currentArticle?.slug}`);
+      navigate(`/articles/${currentArticle?.slug}`);
     }
   }, [isSubmitting, loading]);
 
   // useFieldArray — управление массивом тегов
   // Позволяет добавлять (append) и удалять (remove) теги
+  // fields содержит список элементов (обновляется при изменениях)
   const { append, fields, remove } = useFieldArray({ name: 'tags', control });
 
   const onSubmit: SubmitHandler<IFieldCreateArticle> = (data) => {
@@ -110,10 +111,10 @@ export default function ArticleForm({ articleSlug = null }: { articleSlug: strin
     });
   }
 
-  // Если пользователь не авторизован или редактирует чужую статью → перенаправляет на страницу входа (Redirect).  
+  // Если пользователь не авторизован или редактирует чужую статью → перенаправляет на страницу входа (Redirect).
   return !token ||
     (currentArticle && currentUser && currentArticle.author.username !== currentUser.username) ? (
-    <Redirect to="/sign-in" />
+    <Navigate to="/sign-in" />
   ) : (
     <div className={classes['form-wrap']}>
       <form className={classes['form-article']} onSubmit={handleSubmit(onSubmit)}>
@@ -123,6 +124,7 @@ export default function ArticleForm({ articleSlug = null }: { articleSlug: strin
           <input
             {...register('title', {
               required: 'Поле обязательно к заполнению',
+              validate: (value) => value.trim() !== '' || 'Поле не может содержать только пробелы',
             })}
             defaultValue={title}
             placeholder="Title"
@@ -139,6 +141,7 @@ export default function ArticleForm({ articleSlug = null }: { articleSlug: strin
           <input
             {...register('description', {
               required: 'Поле обязательно к заполнению',
+              validate: (value) => value.trim() !== '' || 'Поле не может содержать только пробелы',
             })}
             defaultValue={description}
             placeholder="Title"
@@ -157,6 +160,7 @@ export default function ArticleForm({ articleSlug = null }: { articleSlug: strin
           <textarea
             {...register('text', {
               required: 'Поле обязательно к заполнению',
+              validate: (value) => value.trim() !== '' || 'Поле не может содержать только пробелы',
             })}
             defaultValue={text}
             placeholder="Text"

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 
 import Card from '../Card/Card';
 import CardList from '../CardList/CardList';
@@ -10,37 +10,36 @@ import ArticleForm from '../ArticleForm/ArticleForm';
 
 import classes from './App.module.scss';
 
+function CardWithSlug() {
+  const params = useParams();
+  const slug = params.slug ?? ''; // Если slug отсутствует, передаем пустую строку
+
+  return <Card articleSlug={slug} />;
+}
+
+function ArticleFormWithSlug() {
+  const params = useParams();
+  const slug = params.slug ?? '';
+
+  return <ArticleForm articleSlug={slug} />;
+}
+
 export default function App() {
   return (
     <Router>
       <div className={classes.app}>
         <Header />
         <main className={classes['app-main']}>
-          <Switch>
-            <Route
-              path="/articles/:slug"
-              exact
-              render={({ match }) => {
-                const { slug } = match.params;
-                return <Card articleSlug={slug} />;
-              }}
-            />
-            <Route path="/sign-in" exact component={SignIn} />
-            <Route path="/sign-up" exact component={SignUp} />
-            <Route path="/profile" exact component={EditProfile} />
-            <Route path="/new-article" exact component={ArticleForm} />
-            <Route
-              path="/articles/:slug/edit"
-              exact
-              render={({ match }) => {
-                const { slug } = match.params;
-                return <ArticleForm articleSlug={slug} />;
-              }}
-            />
-
-            <Route path="/" exact component={CardList} />
-            <Redirect to="/" />
-          </Switch>
+          <Routes>
+            <Route path="/articles/:slug" element={<CardWithSlug />} />
+            <Route path="/profile" element={<EditProfile />} />
+            <Route path="/new-article" element={<ArticleForm articleSlug={null} />} />
+            <Route path="/articles/:slug/edit" element={<ArticleFormWithSlug />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/" element={<CardList />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
         </main>
       </div>
     </Router>

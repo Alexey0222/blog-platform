@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import uniqid from 'uniqid';
 import { format, parseISO } from 'date-fns';
 import { enGB } from 'date-fns/locale';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { Button, Popconfirm } from 'antd';
 
@@ -30,7 +30,7 @@ export default function CardHeader({
   const dispatch = useAppDispatch();
   const token = localStorage.getItem('token');
   const formateDate = format(parseISO(createdAt), 'MMMM dd, yyyy', { locale: enGB });
-  const history = useHistory();
+  const navigate = useNavigate();
   let currentUsername;
   if (currentUser) {
     currentUsername = currentUser.username;
@@ -38,7 +38,7 @@ export default function CardHeader({
 
   useEffect(() => {
     if (!loading && isDeleteSuccess) {
-      history.push('/');
+      navigate('/home');
     }
   }, [isDeleteSuccess]);
 

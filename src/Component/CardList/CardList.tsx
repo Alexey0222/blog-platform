@@ -1,6 +1,7 @@
 import uniqid from 'uniqid';
 import { useEffect } from 'react';
 import { ConfigProvider, Pagination, Spin } from 'antd';
+import { useSearchParams } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { clearCurrentArticle, clearDeleteState, fetchCards } from '../../store/fetchSlice';
@@ -13,16 +14,18 @@ export default function CardList() {
   const token = localStorage.getItem('token');
   const { articles, articlesCount, currentUser } = useAppSelector((state) => state.fetchReducer);
   const loading = useAppSelector((state) => state.fetchReducer.loading);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Получаем текущую страницу из URL, если её нет — устанавливаем 1
+  const currentPage = Number(searchParams.get('page')) || 1;
 
   useEffect(() => {
     dispatch(clearDeleteState());
     dispatch(clearCurrentArticle());
-    if (token) {
-      dispatch(fetchCards({ offset: 0, token }));
-    } else {
-      dispatch(fetchCards({ offset: 0, token: null }));
-    }
-  }, [currentUser]);
+
+    const offset = 5 * (currentPage - 1); // Смещение для пагинации
+    dispatch(fetchCards({ offset, token: token || null }));
+  }, [currentUser, currentPage]);
 
   const cardsItem = articles.map((article) => (
     <li className={classes['cardlist-item']} key={uniqid.time('cards:')}>
@@ -49,14 +52,10 @@ export default function CardList() {
         <Pagination
           className={classes.pagination}
           showSizeChanger={false}
-          defaultCurrent={1}
+          current={currentPage} // Теперь берём текущую страницу из URL
           total={articlesCount}
           onChange={(value) => {
-            if (token) {
-              dispatch(fetchCards({ offset: 5 * (value - 1), token }));
-            } else {
-              dispatch(fetchCards({ offset: 5 * (value - 1), token: null }));
-            }
+            setSearchParams({ page: value.toString() }); // Обновляем URL при смене страницы
           }}
         />
       </ConfigProvider>
