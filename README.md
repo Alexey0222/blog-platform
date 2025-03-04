@@ -1,4 +1,4 @@
-# Перейдите по [ссылке](https://blog-platform-main.vercel.app/) на сайт.
+# Перейдите по [ссылке](https://blog-platform-eosin-seven.vercel.app//) на сайт.
 
 # React + TypeScript + Vite
 
